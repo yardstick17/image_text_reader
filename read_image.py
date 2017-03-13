@@ -68,9 +68,9 @@ def contour_plot_on_text(inv_img):
 def main(file_path):
     image = process_image_for_ocr(file_path)
     image_text = extract_image_text(image)
-    print('extract_image_text text :\n', image_text)
+    print('extracted_image_text text :\n', image_text)
     return image_text
 
 
-image_path = '/Users/Amit/Desktop/data_cleaning/51d518c25e2153da53439668dd6b3590.jpg'
-main(image_path)
+
+
