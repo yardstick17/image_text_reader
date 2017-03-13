@@ -4,14 +4,9 @@ It's a very basic command line tool to read images , images formatted like a res
 
 ### Commands
 
-```sh
-extract_dish --help 
-
-extract_dish 					    ( reads a default image)	
-
-extract_dish file_path_to_image		(reads image at path file_path_to_image)
 ```
-
+Will update soon
+```
 ### Tesseract-ocr
 This tools need tesseract-ocr engine. Help yourself with this --
 * https://github.com/tesseract-ocr/tesseract/wiki
