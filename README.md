@@ -1,6 +1,6 @@
-# Menu Parser
+# image_text_reader
 
-It's a very basic command line tool to read images , images formatted like a restaurant-menu. It outputs the text part excluding the numerical part and special character.
+It's a very basic tool to read images , images formatted like a restaurant-menu.
 
 ### Commands
 
