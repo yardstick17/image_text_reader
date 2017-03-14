@@ -25,7 +25,7 @@ def extract_image_text(image):
     img = image.copy()
     img2gray = img
     inv_img = (255 - img2gray)
-    contours = contour_plot_on_text(inv_img)
+    contours = contour_plot_on_text_in_image(inv_img)
     complete_image_text = read_contours_text(boxed_image, contours, img)
     cv2.imwrite('boxed_image.jpg', boxed_image)
     return complete_image_text
@@ -55,9 +55,9 @@ def read_contours_text(boxed_image, contours, img):
     return '\n'.join(list_of_text).strip()
 
 
-def contour_plot_on_text(inv_img):
+def contour_plot_on_text_in_image(inv_img):
     kernel = cv2.getStructuringElement(cv2.MORPH_CROSS, (5, 2))
-    dilated = cv2.dilate(inv_img, kernel, iterations=10)  # dilate
+    dilated = cv2.dilate(inv_img, kernel, iterations=7)  # dilate
     _, contours, hierarchy = cv2.findContours(
         dilated,
         cv2.RETR_EXTERNAL,
@@ -65,12 +65,8 @@ def contour_plot_on_text(inv_img):
     return contours
 
 
-def main(file_path):
-    image = process_image_for_ocr(file_path)
+def read_image_from_file(filename):
+    image = process_image_for_ocr(filename)
     image_text = extract_image_text(image)
     print('extracted_image_text text :\n', image_text)
     return image_text
-
-
-
-

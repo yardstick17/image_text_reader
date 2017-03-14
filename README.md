@@ -5,7 +5,9 @@ It's a very basic tool to read images , images formatted like a restaurant-menu.
 ### Commands
 
 ```
-Will update soon
+
+        Will update soon
+
 ```
 ### Tesseract-ocr
 This tools need tesseract-ocr engine. Help yourself with this --

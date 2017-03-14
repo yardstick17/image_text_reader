@@ -22,6 +22,7 @@ def set_image_dpi(file_path):
     length_x, width_y = im.size
     factor = max(1, int(IMAGE_SIZE / length_x))
     size = factor * length_x, factor * width_y
+    # size = (1800, 1800)
     im_resized = im.resize(size, Image.ANTIALIAS)
     temp_file = tempfile.NamedTemporaryFile(delete=False, suffix='.jpg')
     temp_filename = temp_file.name
