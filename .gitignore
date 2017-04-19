@@ -94,3 +94,6 @@ ENV/
 
 build/bdist.macosx-10.6-x86_64/
 *.jpg
+.pre-commit-config.yaml
+env3/
+test/

@@ -9,6 +9,17 @@ from PIL import Image
 IMAGE_SIZE = 1800
 BINARY_THREHOLD = 180
 
+size = None
+
+
+def get_size_of_scaled_image(im):
+    global size
+    if size is None:
+        length_x, width_y = im.size
+        factor = max(1, int(IMAGE_SIZE / length_x))
+        size = factor * length_x, factor * width_y
+    return size
+
 
 def process_image_for_ocr(file_path):
     # TODO : Implement using opencv
@@ -19,14 +30,12 @@ def process_image_for_ocr(file_path):
 
 def set_image_dpi(file_path):
     im = Image.open(file_path)
-    length_x, width_y = im.size
-    factor = max(1, int(IMAGE_SIZE / length_x))
-    size = factor * length_x, factor * width_y
     # size = (1800, 1800)
+    size = get_size_of_scaled_image(im)
     im_resized = im.resize(size, Image.ANTIALIAS)
     temp_file = tempfile.NamedTemporaryFile(delete=False, suffix='.jpg')
     temp_filename = temp_file.name
-    im_resized.save(temp_filename, dpi=(300, 300))
+    im_resized.save(temp_filename, dpi=(300, 300))  # best for OCR
     return temp_filename
 
 
