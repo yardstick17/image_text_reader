@@ -1,6 +1,8 @@
 import unicodedata
 
+import click
 import cv2
+import logging
 from PIL import Image
 from PIL import ImageDraw
 from PIL import ImageFont
@@ -37,11 +39,11 @@ def extract_image_text(image):
 
 def read_contours_text(boxed_image, contours, img):
     """store on the location where it is located in the image. here it will be top-left pixel location as the key"""
+    logging.info('Reading the text inside the contour plotted')
     image_text_dict = get_text_with_location(boxed_image, contours, img)
     write_as_digital_image(image_text_dict)
     list_of_text = []
     for key, value in sorted(image_text_dict.items()):
-        print('key , value) : ', key, value)
         list_of_text.append(value)
     return '\n'.join(list_of_text).strip()
 
@@ -78,7 +80,7 @@ def contour_plot_on_text_in_image(inv_img):
 def read_image_from_file(filename):
     image = process_image_for_ocr(filename)
     image_text = extract_image_text(image)
-    print('extracted_image_text text :\n', image_text)
+    logging.info('Extracted Text:{}'.format(image_text))
     return image_text
 
 
@@ -86,7 +88,7 @@ def write_as_digital_image(image_text_dict):
     size = get_size_of_scaled_image('not required')
     img = Image.new("RGB", size, 'white')
     draw = ImageDraw.Draw(img)
-    font = ImageFont.truetype("TravelingTypewriter.ttf", 32)
+    font = ImageFont.truetype("Florentia-Thin-trial.ttf", 32)
     for location, text in image_text_dict.items():
         text = unicodedata.normalize('NFKD', text).encode(
             'ascii', 'ignore').lower().decode('utf-8')
@@ -96,4 +98,27 @@ def write_as_digital_image(image_text_dict):
     img.save('digital_menu.jpg')
 
 
-read_image_from_file('tea_halt.jpg')
+@click.group()
+def main():
+    return 0
+
+
+@main.command()
+@click.option('--filename', '-f', help='The input image with text to be read')
+def read_text_from_local_image(filename):
+    return read_image_from_file(filename)
+
+
+@main.command()
+@click.option('--url', '-u', help='The url of image')
+def read_text_from_image_url(url):
+    from api.app import download_image
+    filename = download_image(url)
+    return read_image_from_file(filename)
+
+
+cli = click.CommandCollection(sources=[main])
+
+if __name__ == '__main__':
+    logging.basicConfig(format='[%(asctime)s] %(levelname)s : %(message)s', level=logging.INFO)
+    cli()

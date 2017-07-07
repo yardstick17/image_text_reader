@@ -3,6 +3,7 @@
 import tempfile
 
 import cv2
+import logging
 import numpy as np
 from PIL import Image
 
@@ -22,7 +23,7 @@ def get_size_of_scaled_image(im):
 
 
 def process_image_for_ocr(file_path):
-    # TODO : Implement using opencv
+    logging.info('Processing image for text Extraction')
     temp_filename = set_image_dpi(file_path)
     im_new = remove_noise_and_smooth(temp_filename)
     return im_new
@@ -48,6 +49,7 @@ def image_smoothening(img):
 
 
 def remove_noise_and_smooth(file_name):
+    logging.info('Removing noise and smoothening image')
     img = cv2.imread(file_name, 0)
     filtered = cv2.adaptiveThreshold(img.astype(np.uint8), 255, cv2.ADAPTIVE_THRESH_MEAN_C, cv2.THRESH_BINARY, 41, 3)
     kernel = np.ones((1, 1), np.uint8)
