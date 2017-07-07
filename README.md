@@ -8,13 +8,6 @@ This tools need tesseract-ocr engine. Help yourself with this --
 
 ###### OCR reads the text extracted image from the full image. [Click here](https://github.com/yardstick17/menu_parser/blob/master/boxed_image.jpg)
 
-### Digital Menu
-![Digital Image](images/digital_menu.jpg)]
-
-### Original Image
-![Original Image](images/sample_image.jpg)
-
-
 ## Command to use:
 ### Read from url
 
@@ -36,4 +29,21 @@ This tools need tesseract-ocr engine. Help yourself with this --
 [2017-07-07 16:32:39,232] INFO : Removing noise and smoothening image
 [2017-07-07 16:32:39,442] INFO : Reading the text inside the contour plotted
 ```
+
+
+### Deploy an api for reading text from image!
+> PYTHONPATH='.' python3 api/app.py
+```bash
+[2017-07-07 16:49:57,818] INFO :  * Running on http://0.0.0.0:6600/ (Press CTRL+C to quit)
+[2017-07-07 16:49:57,820] INFO :  * Restarting with stat
+[2017-07-07 16:49:58,712] WARNING :  * Debugger is active!
+[2017-07-07 16:49:58,738] INFO :  * Debugger pin code: 316-405-633
+```
+
+
+### Digital Menu
+![Digital Image](images/digital_menu.jpg)
+
+### Original Image
+![Original Image](images/sample_image.jpg)
 
