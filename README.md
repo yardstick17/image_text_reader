@@ -42,6 +42,12 @@ This tools need tesseract-ocr engine. Help yourself with this --
 [2017-07-07 16:49:58,738] INFO :  * Debugger pin code: 316-405-633
 ```
 
+### Sample api deployed on my tiny server. Please be patient with them.
+```bash
+curl -X POST \
+  http://54.254.214.96/read_image_from_file/url \
+  -F url=https://africatalentbank.com/wp-content/uploads/2014/10/Menu.jpg
+```
 
 ### Digital Menu
 ![Digital Image](images/digital_menu.jpg)
