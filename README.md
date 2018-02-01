@@ -10,6 +10,10 @@ This tools need tesseract-ocr engine. Help yourself with this --
 ###### OCR reads the text extracted image from the full image. [Click here](https://github.com/yardstick17/menu_parser/blob/master/boxed_image.jpg)
 
 ## Command to use:
+
+### Dockerized image reading
+> docker run -it yardstick17/image-text-reader bash -c 'PYTHONPATH='.' python3 read_image.py read_text_from_local_image -f images/sample_image.jpg'
+
 ### Read from url
 
 > PYTHONPATH='.' python3 read_image.py read_text_from_image_url -u https://marketplace.canva.com/MACHUlPU93Q/1/0/thumbnail_large/canva-peach-green-leaves-garden-vegetarian-pizza-menu-MACHUlPU93Q.jpg
