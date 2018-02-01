@@ -1,0 +1,15 @@
+language: python
+services: docker
+#cache: pip
+#python:
+#  - 2.7
+#  #- 3.4
+#  - 3.5
+#  - 3.6
+before_install:
+  - docker build --tag image-text-reader -f Dockerfile .
+
+script:
+  - sudo docker run -it image-text-reader bash -c 'PYTHONPATH='.' python3 read_image.py read_text_from_local_image -f images/sample_image.jpg'
+#after_success:
+#  - DO SOMETHING MEANINGFUL AFTER THE TESTS ARE PASSED

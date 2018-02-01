@@ -1,6 +1,5 @@
 # image_text_reader
-[![Gitter](https://badges.gitter.im/yardstick17/image_text_reader.svg)](https://gitter.im/yardstick17/image_text_reader?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
-
+[![Gitter](https://badges.gitter.im/yardstick17/image_text_reader.svg)](https://gitter.im/yardstick17/image_text_reader?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge) [![Build Status](https://travis-ci.org/yardstick17/image_text_reader.svg?branch=master)](https://travis-ci.org/yardstick17/image_text_reader)
 
 It's a very basic tool to read images , images formatted like a restaurant-menu.
 
@@ -54,4 +53,3 @@ curl -X POST \
 
 ### Original Image
 ![Original Image](images/sample_image.jpg)
-
