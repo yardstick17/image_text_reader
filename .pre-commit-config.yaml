@@ -1,0 +1,65 @@
+-   repo: git://github.com/pre-commit/mirrors-yapf
+    sha: v0.16.3
+    hooks:
+    -   id: yapf
+        stages: [commit]
+        exclude: ^.*\/generated\/.*(_pb2|_pb2_grpc).py$
+        #exclude: ^.*generated\/[a-zA-Z0-9_]*(_pb2|_pb2_grpc).py$
+        #exclude: >
+            #(?x)^(
+                #nitro/core_rec_api/generated/core_rec_api_pb2_grpc.py|
+                #nitro/core_rec_api/generated/core_rec_api_pb2.py
+            #)$
+
+
+-   repo: git@github.com:asottile/reorder_python_imports
+    sha: v0.3.4
+    hooks:
+    -   id: reorder-python-imports
+        stages: [commit]
+        exclude: ^.*\/generated\/.*(_pb2|_pb2_grpc).py$
+
+-   repo: git://github.com/pre-commit/pre-commit-hooks
+    sha: v0.8.0
+    hooks:
+    -   id: trailing-whitespace
+    -   id: check-ast
+    -   id: check-case-conflict
+    -   id: check-merge-conflict
+    -   id: check-symlinks
+    -   id: name-tests-test
+        entry: name-tests-test --django  # To allow test_foo.py filenames instead of foo_test.py
+    #-   id: requirements-txt-fixer
+    -   id: debug-statements
+    # See https://github.com/pre-commit/pre-commit-hooks/issues/173 https://github.com/pre-commit/pre-commit/issues/191
+    #-   id: detect-aws-credentials
+        #exclude: ^(pyzomato)$
+    #-   id: detect-private-key     # This hook is broken for submodules
+        #exclude: ^(pyzomato)$
+    -   id: double-quote-string-fixer
+        exclude: ^.*\/generated\/.*(_pb2|_pb2_grpc).py$
+    -   id: end-of-file-fixer
+        exclude: ^.*\/generated\/.*(_pb2|_pb2_grpc).py$
+    -   id: fix-encoding-pragma
+        exclude: ^.*\/generated\/.*(_pb2|_pb2_grpc).py$
+    -   id: flake8
+        stages: [commit]
+        exclude: ^.*\/generated\/.*(_pb2|_pb2_grpc).py$
+
+-   repo: local
+    push_stage: [push]
+    commit_stage: [commit]
+
+    hooks:
+    #-   id: check-tox
+        #name: Tox Tests
+        #entry: python -m tox
+        #stages: push_stage
+        #language: system
+        #files: \.py$
+    -   id: check-nose2
+        name: Nose2 Tests
+        entry: sh -c "make test"
+        #stages: commit_stage
+        language: system
+        files: \.py$
