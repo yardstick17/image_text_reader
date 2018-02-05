@@ -1,23 +1,12 @@
-try:
-    import cv2.cv as cv
-
-    OPENCV_AVAILABLE = True
-except ImportError:
-    OPENCV_AVAILABLE = False
-
-try:
-    import cv2
-
-    OPENCV2_AVAILABLE = True
-except ImportError:
-    OPENCV2_AVAILABLE = False
-
+# -*- coding: utf-8 -*-
+import logging
 import os
-from subprocess import Popen, PIPE
+from subprocess import PIPE
+from subprocess import Popen
 
-PROG_NAME = 'tesseract'
-TEMP_IMAGE = 'tmp.bmp'
-TEMP_FILE = 'tmp'
+from clean_text.clean_text import CleanText
+
+logger = logging.getLogger(__name__)
 
 # All the PSM arguments as a variable name (avoid having to know them)
 PSM_OSD_ONLY = 0
@@ -37,70 +26,65 @@ class TesseractException(Exception):  # Raised when tesseract does not return 0
     pass
 
 
-class TesseractNotFound(Exception):  # When tesseract is not found in the path
-    pass
+class PyTesseract:
+    PROG_NAME = 'tesseract'
+    TEMP_FILE = '/tmp/tmp'
+    DEFAULT_EXTENSION = '.txt'
 
+    def __init__(self, input_file, out_file, psm):
+        """
 
-def check_path():  # Check if tesseract is in the path raise TesseractNotFound otherwise
-    for path in os.environ.get('PATH', '').split(':'):
-        filepath = os.path.join(path, PROG_NAME)
-        if os.path.exists(filepath) and not os.path.isdir(filepath):
-            return True
-    raise TesseractNotFound
+		:param input_file:
+		:param out_file:
+		:param psm: Page segmentation modes:
+					0    Orientation and script detection (OSD) only.
+					1    Automatic page segmentation with OSD.
+					2    Automatic page segmentation, but no OSD, or OCR.
+					3    Fully automatic page segmentation, but no OSD. (Default)
+					4    Assume a single column of text of variable sizes.
+					5    Assume a single uniform block of vertically aligned text.
+					6    Assume a single uniform block of text.
+					7    Treat the image as a single text line.
+					8    Treat the image as a single word.
+					9    Treat the image as a single word in a circle.
+					10    Treat the image as a single character.
+					11    Sparse text. Find as much text as possible in no particular order.
+					12    Sparse text with OSD.
+					13    Raw line. Treat the image as a single text line,
+										bypassing hacks that are Tesseract-specific.
+		"""
+        self.input_file = input_file
+        self.output_file = out_file
+        self.psm = psm
 
+    def _read_image(self):
+        args = [self.PROG_NAME, self.input_file,
+                self.output_file]  # Create the arguments
+        if self.psm:
+            args.append('-psm')
+            args.append(str(self.psm))
+        proc = Popen(args, stdout=PIPE, stderr=PIPE)  # Open process
+        ret = proc.communicate()  # Launch it
+        code = proc.returncode
+        if code != 0:
+            raise TesseractException('Exception code: {}'.format(code))
+        logger.debug('Output of image text is written in the file: %s',
+                     self.output_file)
+        return ret
 
-def process_request(input_file, output_file, lang=None, psm=None):
-    args = [PROG_NAME, input_file, output_file]  # Create the arguments
-    if lang is not None:
-        args.append("-l")
-        args.append(lang)
-    if psm is not None:
-        args.append("-psm")
-        args.append(str(psm))
-    proc = Popen(args, stdout=PIPE, stderr=PIPE)  # Open process
-    ret = proc.communicate()  # Launch it
+    @property
+    def filepath_with_extension(self):
+        return self.output_file + self.DEFAULT_EXTENSION
 
-    code = proc.returncode
-    if code != 0:
-        if code == 2:
-            raise TesseractException  # , "File not found"
-        if code == -11:
-            raise TesseractException  # , "Language code invalid: " + ret[1]
-        else:
-            raise TesseractException  # , ret[1]
-
-
-def iplimage_to_string(im, lang=None, psm=None):
-    if not OPENCV_AVAILABLE:
-        print ("OpenCV not Available")
-        return -1
-    else:
-        cv.SaveImage(TEMP_IMAGE, im)
-        txt = image_to_string(TEMP_IMAGE, lang, psm)
-        os.remove(TEMP_IMAGE)
-        return txt
+    def read_text(self):
+        self._read_image()
+        with open(self.filepath_with_extension, 'r') as file:
+            text = file.read()
+            clean_text = CleanText(text).process()
+        os.remove(self.filepath_with_extension)
+        return clean_text
 
 
 def image_to_string(file, psm=None):
-    lang = None
-    check_path()  # Check if tesseract available in the path
-    process_request(file, TEMP_FILE, lang, psm)  # Process command
-    f = open(TEMP_FILE + ".txt", "r")  # Open back the file
-    txt = f.read()
-    os.remove(TEMP_FILE + ".txt")
+    txt = PyTesseract(file, PyTesseract.TEMP_FILE, psm=psm).read_text()
     return txt
-
-
-def mat_to_string(im, lang=None, psm=None):
-    if not OPENCV2_AVAILABLE:
-        print("cv2 is not Available")
-        return -1
-    else:
-        cv2.imwrite(TEMP_IMAGE, im)
-        txt = image_to_string(TEMP_IMAGE, lang, psm)
-        os.remove(TEMP_IMAGE)
-        return txt
-
-
-if __name__ == '__main__':
-    print (image_to_string("image.jpg", "fra", PSM_AUTO))  # Example)

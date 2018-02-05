@@ -13,28 +13,14 @@ def remove_numeric_part(string):
     return result
 
 
-def remove_too_many_small_words_dish(text):
-    new_text = []
-    text = text.split('\n')
-    for lines in text:
-        word_count = 0.0
-        small_word_count = 0.0
-        line = lines.split(' ')
-        for word in line:
-            if len(word) <= 2:
-                small_word_count += 1
-            word_count += 1
-        try:
-            small_word_proportion = small_word_count / word_count
-
-        except Exception as E:
-            print('got the exception  ', E)
-            small_word_proportion = 0.0
-        if small_word_proportion <= 0.4:
-            new_text.append(line)
-    return new_text
-
-
 def make_string_alphanmeric(lines):
-    s = re.sub('[^0-9a-zA-Z\n]+', ' ', lines)
+    s = re.sub('^[a-zA-Z0-9\\-\\s]+$', ' ', lines)
     return s.strip()
+
+
+class CleanText(object):
+    def __init__(self, text):
+        self.text = text
+
+    def process(self):
+        return make_string_alphanmeric(self.text)

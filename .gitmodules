@@ -1,0 +1,3 @@
+[submodule "cs543project"]
+	path = cs543project
+	url = https://github.com/yardstick17/cs543project.git
