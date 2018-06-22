@@ -12,7 +12,7 @@ This tools need tesseract-ocr engine. Help yourself with this --
 ## Command to use:
 
 ### Dockerized image reading
-> docker run -it yardstick17/image-text-reader bash -c 'PYTHONPATH='.' python3 read_image.py read_text_from_local_image -f images/sample_image.jpg'
+> docker run -it yardstick17/image-text-reader bash -c "PYTHONPATH='.' python3 read_image.py read_text_from_local_image -f images/sample_image.jpg"
 
 ### Read from url
 
