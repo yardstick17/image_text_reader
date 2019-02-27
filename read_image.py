@@ -68,7 +68,7 @@ def get_text_with_location(boxed_image, contours, img):
             boxed_image, (x, y), (x + w + 10, y + h + 10),
             thickness=2,
             color=(0, 123, 123))
-        """This writes the bounding box on umage.
+        """This writes the bounding box on image.
 		"""
 
         box_read = extract_image_from_location(img, x, y, w, h)

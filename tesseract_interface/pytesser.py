@@ -61,7 +61,7 @@ class PyTesseract:
         args = [self.PROG_NAME, self.input_file,
                 self.output_file]  # Create the arguments
         if self.psm:
-            args.append('-psm')
+            args.append('--psm')
             args.append(str(self.psm))
         proc = Popen(args, stdout=PIPE, stderr=PIPE)  # Open process
         ret = proc.communicate()  # Launch it
