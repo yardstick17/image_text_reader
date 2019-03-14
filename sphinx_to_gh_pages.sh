@@ -3,7 +3,7 @@
 set -euo pipefail
 IFS=$'\n\t'
 
-buildDirectory=_build
+buildDirectory=/tmp/_build
 
 # get a clean master branch assuming
 git checkout master
