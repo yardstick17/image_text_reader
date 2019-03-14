@@ -1,0 +1,277 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>image_text_reader &mdash; Image Text Reader  documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script type="text/javascript" src="_static/jquery.js"></script>
+        <script type="text/javascript" src="_static/underscore.js"></script>
+        <script type="text/javascript" src="_static/doctools.js"></script>
+        <script type="text/javascript" src="_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home"> Image Text Reader
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <!-- Local TOC -->
+              <div class="local-toc"><ul>
+<li><a class="reference internal" href="#">image_text_reader</a><ul>
+<li><a class="reference internal" href="#tesseract-ocr">Tesseract-ocr</a><ul>
+<li><a class="reference internal" href="#ocr-reads-the-text-extracted-image-from-the-full-image-click-here">OCR reads the text extracted image from the full image. Click here</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#command-to-use">Command to use:</a><ul>
+<li><a class="reference internal" href="#dockerized-image-reading">Dockerized image reading</a></li>
+<li><a class="reference internal" href="#read-from-url">Read from url</a></li>
+<li><a class="reference internal" href="#read-from-local-image">Read from local image</a></li>
+<li><a class="reference internal" href="#deploy-an-api-for-reading-text-from-image">Deploy an api for reading text from image!</a></li>
+<li><a class="reference internal" href="#sample-api-deployed-on-my-tiny-server-please-be-patient-with-them">Sample api deployed on my tiny server. Please be patient with them.</a></li>
+<li><a class="reference internal" href="#digital-menu">Digital Menu</a></li>
+<li><a class="reference internal" href="#original-image">Original Image</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Image Text Reader</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+      <li>image_text_reader</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/README.md.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="image-text-reader">
+<h1>image_text_reader<a class="headerlink" href="#image-text-reader" title="Permalink to this headline">¶</a></h1>
+<p><a class="reference external" href="https://gitter.im/yardstick17/image_text_reader?utm_source=badge&amp;utm_medium=badge&amp;utm_campaign=pr-badge"><img alt="https://badges.gitter.im/yardstick17/image_text_reader.svg" src="https://badges.gitter.im/yardstick17/image_text_reader.svg" />Gitter</a> <a class="reference external" href="https://travis-ci.org/yardstick17/image_text_reader"><img alt="https://travis-ci.org/yardstick17/image_text_reader.svg?branch=master" src="https://travis-ci.org/yardstick17/image_text_reader.svg?branch=master" />Build Status</a></p>
+<p>It’s a very basic tool to read images , images formatted like a restaurant-menu.</p>
+<div class="section" id="tesseract-ocr">
+<h2>Tesseract-ocr<a class="headerlink" href="#tesseract-ocr" title="Permalink to this headline">¶</a></h2>
+<p>This tools need tesseract-ocr engine. Help yourself with this –</p>
+<ul class="simple">
+<li>https://github.com/tesseract-ocr/tesseract/wiki</li>
+</ul>
+<div class="section" id="ocr-reads-the-text-extracted-image-from-the-full-image-click-here">
+<h3>OCR reads the text extracted image from the full image. <a class="reference external" href="https://github.com/yardstick17/menu_parser/blob/master/boxed_image.jpg">Click here</a><a class="headerlink" href="#ocr-reads-the-text-extracted-image-from-the-full-image-click-here" title="Permalink to this headline">¶</a></h3>
+</div>
+</div>
+<div class="section" id="command-to-use">
+<h2>Command to use:<a class="headerlink" href="#command-to-use" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="dockerized-image-reading">
+<h3>Dockerized image reading<a class="headerlink" href="#dockerized-image-reading" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div>docker run -it yardstick17/image-text-reader bash -c “PYTHONPATH=’.’ python3 read_image.py read_text_from_local_image -f images/sample_image.jpg”</div></blockquote>
+</div>
+<div class="section" id="read-from-url">
+<h3>Read from url<a class="headerlink" href="#read-from-url" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div>PYTHONPATH=’.’ python3 read_image.py read_text_from_image_url -u https://marketplace.canva.com/MACHUlPU93Q/1/0/thumbnail_large/canva-peach-green-leaves-garden-vegetarian-pizza-menu-MACHUlPU93Q.jpg</div></blockquote>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="o">[</span><span class="m">2017</span>-07-07 <span class="m">16</span>:20:34,119<span class="o">]</span> INFO : Downloading image from url: https://marketplace.canva.com/MACHUlPU93Q/1/0/thumbnail_large/canva-peach-green-leaves-garden-vegeta
+<span class="o">[</span><span class="m">2017</span>-07-07 <span class="m">16</span>:20:35,997<span class="o">]</span> INFO : Saving file: /var/folders/cz/n3vkz7x91qs06nmm9byxxgz00000gr/T/tmpienrxu2c
+<span class="o">[</span><span class="m">2017</span>-07-07 <span class="m">16</span>:20:35,997<span class="o">]</span> INFO : Processing image <span class="k">for</span> text Extraction
+<span class="o">[</span><span class="m">2017</span>-07-07 <span class="m">16</span>:20:36,308<span class="o">]</span> INFO : Removing noise and smoothening image
+<span class="o">[</span><span class="m">2017</span>-07-07 <span class="m">16</span>:20:36,431<span class="o">]</span> INFO : Reading the text inside the contour plotted
+</pre></div>
+</div>
+</div>
+<div class="section" id="read-from-local-image">
+<h3>Read from local image<a class="headerlink" href="#read-from-local-image" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div>PYTHONPATH=’.’ python3 read_image.py read_text_from_local_image -f images/sample_image.jpg</div></blockquote>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="o">[</span><span class="m">2017</span>-07-07 <span class="m">16</span>:32:38,862<span class="o">]</span> INFO : Processing image <span class="k">for</span> text Extraction
+<span class="o">[</span><span class="m">2017</span>-07-07 <span class="m">16</span>:32:39,232<span class="o">]</span> INFO : Removing noise and smoothening image
+<span class="o">[</span><span class="m">2017</span>-07-07 <span class="m">16</span>:32:39,442<span class="o">]</span> INFO : Reading the text inside the contour plotted
+</pre></div>
+</div>
+</div>
+<div class="section" id="deploy-an-api-for-reading-text-from-image">
+<h3>Deploy an api for reading text from image!<a class="headerlink" href="#deploy-an-api-for-reading-text-from-image" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div>PYTHONPATH=’.’ python3 api/app.py</div></blockquote>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="o">[</span><span class="m">2017</span>-07-07 <span class="m">16</span>:49:57,818<span class="o">]</span> INFO :  * Running on http://0.0.0.0:6600/ <span class="o">(</span>Press CTRL+C to quit<span class="o">)</span>
+<span class="o">[</span><span class="m">2017</span>-07-07 <span class="m">16</span>:49:57,820<span class="o">]</span> INFO :  * Restarting with stat
+<span class="o">[</span><span class="m">2017</span>-07-07 <span class="m">16</span>:49:58,712<span class="o">]</span> WARNING :  * Debugger is active!
+<span class="o">[</span><span class="m">2017</span>-07-07 <span class="m">16</span>:49:58,738<span class="o">]</span> INFO :  * Debugger pin code: <span class="m">316</span>-405-633
+</pre></div>
+</div>
+</div>
+<div class="section" id="sample-api-deployed-on-my-tiny-server-please-be-patient-with-them">
+<h3>Sample api deployed on my tiny server. Please be patient with them.<a class="headerlink" href="#sample-api-deployed-on-my-tiny-server-please-be-patient-with-them" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>curl -X POST <span class="se">\</span>
+  http://54.254.214.96/read_image_from_file/url <span class="se">\</span>
+  -F <span class="nv">url</span><span class="o">=</span>https://africatalentbank.com/wp-content/uploads/2014/10/Menu.jpg
+</pre></div>
+</div>
+</div>
+<div class="section" id="digital-menu">
+<h3>Digital Menu<a class="headerlink" href="#digital-menu" title="Permalink to this headline">¶</a></h3>
+<p><img alt="_images/digital_menu.jpg" src="_images/digital_menu.jpg" />Digital Image</p>
+</div>
+<div class="section" id="original-image">
+<h3>Original Image<a class="headerlink" href="#original-image" title="Permalink to this headline">¶</a></h3>
+<p><img alt="_images/sample_image.jpg" src="_images/sample_image.jpg" />Original Image</p>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2019, Amit Kushwaha
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>
