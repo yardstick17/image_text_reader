@@ -34,9 +34,7 @@ then
 	mv _build/* . && rm -rf _build
 	git add .
 	git commit -m "new pages version $(date)"
-	git push origin gh-pages
-	# github.com recognizes gh-pages branch and create pages
-	# url scheme https//:[github-handle].github.io/[repository]
+	git push origin $branch_name
 else
 	echo "directory $buildDirectory does not exists"
 fi
