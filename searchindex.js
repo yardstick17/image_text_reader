@@ -1,0 +1,1 @@
+Search.setIndex({docnames:["sphinx-pages"],envversion:53,filenames:["sphinx-pages.rst"],objects:{},objnames:{},objtypes:{},terms:{index:0,search:0},titles:["Welcome to sphinx-pages\u2019s documentation!"],titleterms:{document:0,indic:0,page:0,sphinx:0,tabl:0,welcom:0}})
