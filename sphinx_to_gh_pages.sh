@@ -23,7 +23,7 @@ then
 	git checkout $branch_name
 	git pull origin $branch_name
 	#git stash apply
-	git checkout stash -- . # force git stash to overwrite added files
+#	git checkout stash -- . # force git stash to overwrite added files
 else
 	git checkout --orphan "$branch_name"
 fi
