@@ -1,0 +1,324 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>read_image &mdash; Image Text Reader  documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../_static/jquery.js"></script>
+        <script type="text/javascript" src="../_static/underscore.js"></script>
+        <script type="text/javascript" src="../_static/doctools.js"></script>
+        <script type="text/javascript" src="../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> Image Text Reader
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../README.html">image_text_reader</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules.html">image_text_reader</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Image Text Reader</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="index.html">Module code</a> &raquo;</li>
+        
+      <li>read_image</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for read_image</h1><div class="highlight"><pre>
+<span></span><span class="c1"># -*- coding: utf-8 -*-</span>
+<span class="kn">import</span> <span class="nn">logging</span>
+<span class="kn">import</span> <span class="nn">unicodedata</span>
+
+<span class="kn">import</span> <span class="nn">click</span>
+<span class="kn">import</span> <span class="nn">cv2</span>
+<span class="kn">from</span> <span class="nn">PIL</span> <span class="k">import</span> <span class="n">Image</span>
+<span class="kn">from</span> <span class="nn">PIL</span> <span class="k">import</span> <span class="n">ImageDraw</span>
+<span class="kn">from</span> <span class="nn">PIL</span> <span class="k">import</span> <span class="n">ImageFont</span>
+
+<span class="kn">from</span> <span class="nn">image_preprocessing.remove_noise</span> <span class="k">import</span> <span class="n">get_size_of_scaled_image</span>
+<span class="kn">from</span> <span class="nn">image_preprocessing.remove_noise</span> <span class="k">import</span> <span class="n">process_image_for_ocr</span>
+<span class="kn">from</span> <span class="nn">tesseract_interface</span> <span class="k">import</span> <span class="n">pytesser</span>
+
+<span class="n">THRESHOLD_FOR_INVERTED_IMAGE</span> <span class="o">=</span> <span class="mi">128</span>
+<span class="kn">import</span> <span class="nn">tempfile</span>
+
+
+<div class="viewcode-block" id="extract_image_from_location"><a class="viewcode-back" href="../read_image.html#read_image.extract_image_from_location">[docs]</a><span class="k">def</span> <span class="nf">extract_image_from_location</span><span class="p">(</span><span class="n">mask</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="n">h</span><span class="p">):</span>
+    <span class="n">temp_file</span> <span class="o">=</span> <span class="n">tempfile</span><span class="o">.</span><span class="n">NamedTemporaryFile</span><span class="p">(</span><span class="n">delete</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">suffix</span><span class="o">=</span><span class="s1">&#39;.jpg&#39;</span><span class="p">)</span>
+    <span class="n">temp_filename</span> <span class="o">=</span> <span class="n">temp_file</span><span class="o">.</span><span class="n">name</span>
+    <span class="n">im</span> <span class="o">=</span> <span class="n">mask</span><span class="p">[</span><span class="n">y</span><span class="p">:</span><span class="n">y</span> <span class="o">+</span> <span class="n">h</span><span class="p">,</span> <span class="n">x</span><span class="p">:</span><span class="n">x</span> <span class="o">+</span> <span class="n">w</span><span class="p">]</span>
+    <span class="n">cv2</span><span class="o">.</span><span class="n">imwrite</span><span class="p">(</span><span class="n">temp_filename</span><span class="p">,</span> <span class="n">im</span><span class="p">)</span>
+    <span class="n">size</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">w</span><span class="p">,</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">h</span>
+    <span class="n">im</span> <span class="o">=</span> <span class="n">Image</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">temp_filename</span><span class="p">)</span>
+    <span class="n">im_resized</span> <span class="o">=</span> <span class="n">im</span><span class="o">.</span><span class="n">resize</span><span class="p">(</span><span class="n">size</span><span class="p">,</span> <span class="n">Image</span><span class="o">.</span><span class="n">ANTIALIAS</span><span class="p">)</span>
+    <span class="n">im_resized</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">temp_filename</span><span class="p">,</span> <span class="n">dpi</span><span class="o">=</span><span class="p">(</span><span class="mi">300</span><span class="p">,</span> <span class="mi">300</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">pytesser</span><span class="o">.</span><span class="n">image_to_string</span><span class="p">(</span><span class="n">temp_filename</span><span class="p">,</span> <span class="mi">6</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="extract_image_text"><a class="viewcode-back" href="../read_image.html#read_image.extract_image_text">[docs]</a><span class="k">def</span> <span class="nf">extract_image_text</span><span class="p">(</span><span class="n">image</span><span class="p">):</span>
+    <span class="n">boxed_image</span> <span class="o">=</span> <span class="n">image</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+    <span class="n">img</span> <span class="o">=</span> <span class="n">image</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+    <span class="n">img2gray</span> <span class="o">=</span> <span class="n">img</span>
+    <span class="n">inv_img</span> <span class="o">=</span> <span class="p">(</span><span class="mi">255</span> <span class="o">-</span> <span class="n">img2gray</span><span class="p">)</span>
+    <span class="n">contours</span> <span class="o">=</span> <span class="n">find_possible_contours_in_image</span><span class="p">(</span><span class="n">inv_img</span><span class="p">)</span>
+    <span class="n">complete_image_text</span> <span class="o">=</span> <span class="n">read_contours_text</span><span class="p">(</span><span class="n">boxed_image</span><span class="p">,</span> <span class="n">contours</span><span class="p">,</span> <span class="n">img</span><span class="p">)</span>
+    <span class="n">cv2</span><span class="o">.</span><span class="n">imwrite</span><span class="p">(</span><span class="s1">&#39;boxed_image.jpg&#39;</span><span class="p">,</span> <span class="n">boxed_image</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">complete_image_text</span></div>
+
+
+<div class="viewcode-block" id="read_contours_text"><a class="viewcode-back" href="../read_image.html#read_image.read_contours_text">[docs]</a><span class="k">def</span> <span class="nf">read_contours_text</span><span class="p">(</span><span class="n">boxed_image</span><span class="p">,</span> <span class="n">contours</span><span class="p">,</span> <span class="n">img</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;store on the location where it is located in the image. here it will be top-left pixel location as the key&quot;&quot;&quot;</span>
+    <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;Reading the text inside the contour plotted&#39;</span><span class="p">)</span>
+    <span class="n">image_text_dict</span> <span class="o">=</span> <span class="n">get_text_with_location</span><span class="p">(</span><span class="n">boxed_image</span><span class="p">,</span> <span class="n">contours</span><span class="p">,</span> <span class="n">img</span><span class="p">)</span>
+    <span class="n">write_as_digital_image</span><span class="p">(</span><span class="n">image_text_dict</span><span class="p">)</span>
+    <span class="n">list_of_text</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">image_text_dict</span><span class="o">.</span><span class="n">items</span><span class="p">()):</span>
+        <span class="n">list_of_text</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+    <span class="k">return</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">list_of_text</span><span class="p">)</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="get_text_with_location"><a class="viewcode-back" href="../read_image.html#read_image.get_text_with_location">[docs]</a><span class="k">def</span> <span class="nf">get_text_with_location</span><span class="p">(</span><span class="n">boxed_image</span><span class="p">,</span> <span class="n">contours</span><span class="p">,</span> <span class="n">img</span><span class="p">):</span>
+    <span class="n">image_text_dict</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="k">for</span> <span class="n">contour</span> <span class="ow">in</span> <span class="n">contours</span><span class="p">:</span>
+        <span class="c1"># get rectangle bounding contour</span>
+        <span class="p">[</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="n">h</span><span class="p">]</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">boundingRect</span><span class="p">(</span><span class="n">contour</span><span class="p">)</span>
+        <span class="c1"># cv2.groupRectangles</span>
+
+        <span class="c1"># draw rectangle around contour on original image</span>
+
+        <span class="c1"># if w &lt; 20 or h &lt; 20:</span>
+        <span class="c1"># 	continue</span>
+        <span class="k">if</span> <span class="n">w</span> <span class="o">&gt;</span> <span class="mi">300</span><span class="p">:</span>
+            <span class="k">continue</span>
+
+        <span class="n">cv2</span><span class="o">.</span><span class="n">rectangle</span><span class="p">(</span>
+            <span class="n">boxed_image</span><span class="p">,</span> <span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">),</span> <span class="p">(</span><span class="n">x</span> <span class="o">+</span> <span class="n">w</span> <span class="o">+</span> <span class="mi">10</span><span class="p">,</span> <span class="n">y</span> <span class="o">+</span> <span class="n">h</span> <span class="o">+</span> <span class="mi">10</span><span class="p">),</span>
+            <span class="n">thickness</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+            <span class="n">color</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">123</span><span class="p">,</span> <span class="mi">123</span><span class="p">))</span>
+        <span class="sd">&quot;&quot;&quot;This writes the bounding box on image.</span>
+<span class="sd">		&quot;&quot;&quot;</span>
+
+        <span class="n">box_read</span> <span class="o">=</span> <span class="n">extract_image_from_location</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="n">h</span><span class="p">)</span>
+        <span class="n">box_read</span> <span class="o">=</span> <span class="n">box_read</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+        <span class="n">image_text_dict</span><span class="p">[(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)]</span> <span class="o">=</span> <span class="n">box_read</span>
+
+    <span class="k">return</span> <span class="n">image_text_dict</span></div>
+
+
+<div class="viewcode-block" id="find_possible_contours_in_image"><a class="viewcode-back" href="../read_image.html#read_image.find_possible_contours_in_image">[docs]</a><span class="k">def</span> <span class="nf">find_possible_contours_in_image</span><span class="p">(</span><span class="n">inv_img</span><span class="p">):</span>
+    <span class="n">kernel</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">getStructuringElement</span><span class="p">(</span><span class="n">cv2</span><span class="o">.</span><span class="n">MORPH_CROSS</span><span class="p">,</span> <span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
+    <span class="n">dilated</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">dilate</span><span class="p">(</span><span class="n">inv_img</span><span class="p">,</span> <span class="n">kernel</span><span class="p">,</span> <span class="n">iterations</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>  <span class="c1"># dilate</span>
+    <span class="n">_</span><span class="p">,</span> <span class="n">contours</span><span class="p">,</span> <span class="n">hierarchy</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">findContours</span><span class="p">(</span>
+        <span class="n">dilated</span><span class="p">,</span> <span class="n">cv2</span><span class="o">.</span><span class="n">RETR_EXTERNAL</span><span class="p">,</span> <span class="n">cv2</span><span class="o">.</span><span class="n">CHAIN_APPROX_NONE</span><span class="p">)</span>  <span class="c1"># get contours</span>
+    <span class="n">cv2</span><span class="o">.</span><span class="n">imwrite</span><span class="p">(</span><span class="s1">&#39;blurred_image.jpg&#39;</span><span class="p">,</span> <span class="mi">255</span> <span class="o">-</span> <span class="n">dilated</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">contours</span></div>
+
+
+<div class="viewcode-block" id="read_image_from_file"><a class="viewcode-back" href="../read_image.html#read_image.read_image_from_file">[docs]</a><span class="k">def</span> <span class="nf">read_image_from_file</span><span class="p">(</span><span class="n">filename</span><span class="p">):</span>
+    <span class="n">image</span> <span class="o">=</span> <span class="n">process_image_for_ocr</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
+    <span class="n">image_text</span> <span class="o">=</span> <span class="n">extract_image_text</span><span class="p">(</span><span class="n">image</span><span class="p">)</span>
+    <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;Extracted Text:</span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">image_text</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">image_text</span></div>
+
+
+<div class="viewcode-block" id="write_as_digital_image"><a class="viewcode-back" href="../read_image.html#read_image.write_as_digital_image">[docs]</a><span class="k">def</span> <span class="nf">write_as_digital_image</span><span class="p">(</span><span class="n">image_text_dict</span><span class="p">):</span>
+    <span class="n">size</span> <span class="o">=</span> <span class="n">get_size_of_scaled_image</span><span class="p">(</span><span class="s1">&#39;not required&#39;</span><span class="p">)</span>
+    <span class="n">img</span> <span class="o">=</span> <span class="n">Image</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="s1">&#39;RGB&#39;</span><span class="p">,</span> <span class="n">size</span><span class="p">,</span> <span class="s1">&#39;white&#39;</span><span class="p">)</span>
+    <span class="n">draw</span> <span class="o">=</span> <span class="n">ImageDraw</span><span class="o">.</span><span class="n">Draw</span><span class="p">(</span><span class="n">img</span><span class="p">)</span>
+    <span class="n">font</span> <span class="o">=</span> <span class="n">ImageFont</span><span class="o">.</span><span class="n">truetype</span><span class="p">(</span><span class="s1">&#39;Florentia-Thin-trial.ttf&#39;</span><span class="p">,</span> <span class="mi">32</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">location</span><span class="p">,</span> <span class="n">text</span> <span class="ow">in</span> <span class="n">image_text_dict</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="n">text</span> <span class="o">=</span> <span class="n">unicodedata</span><span class="o">.</span><span class="n">normalize</span><span class="p">(</span><span class="s1">&#39;NFKD&#39;</span><span class="p">,</span> <span class="n">text</span><span class="p">)</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span>
+            <span class="s1">&#39;ascii&#39;</span><span class="p">,</span> <span class="s1">&#39;ignore&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s1">&#39;utf-8&#39;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
+        <span class="n">draw</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="n">location</span><span class="p">,</span> <span class="n">text</span><span class="p">,</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="n">font</span><span class="o">=</span><span class="n">font</span><span class="p">)</span>
+    <span class="n">draw</span> <span class="o">=</span> <span class="n">ImageDraw</span><span class="o">.</span><span class="n">Draw</span><span class="p">(</span><span class="n">img</span><span class="p">)</span>
+    <span class="n">img</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="s1">&#39;digital_menu.jpg&#39;</span><span class="p">)</span></div>
+
+
+<span class="nd">@click</span><span class="o">.</span><span class="n">group</span><span class="p">()</span>
+<span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
+    <span class="k">return</span> <span class="mi">0</span>
+
+
+<span class="nd">@main</span><span class="o">.</span><span class="n">command</span><span class="p">()</span>
+<span class="nd">@click</span><span class="o">.</span><span class="n">option</span><span class="p">(</span><span class="s1">&#39;--filename&#39;</span><span class="p">,</span> <span class="s1">&#39;-f&#39;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s1">&#39;The input image with text to be read&#39;</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">read_text_from_local_image</span><span class="p">(</span><span class="n">filename</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">read_image_from_file</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
+
+
+<span class="nd">@main</span><span class="o">.</span><span class="n">command</span><span class="p">()</span>
+<span class="nd">@click</span><span class="o">.</span><span class="n">option</span><span class="p">(</span><span class="s1">&#39;--url&#39;</span><span class="p">,</span> <span class="s1">&#39;-u&#39;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s1">&#39;The url of image&#39;</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">read_text_from_image_url</span><span class="p">(</span><span class="n">url</span><span class="p">):</span>
+    <span class="kn">from</span> <span class="nn">api.app</span> <span class="k">import</span> <span class="n">download_image</span>
+    <span class="n">filename</span> <span class="o">=</span> <span class="n">download_image</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">read_image_from_file</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
+
+
+<span class="n">cli</span> <span class="o">=</span> <span class="n">click</span><span class="o">.</span><span class="n">CommandCollection</span><span class="p">(</span><span class="n">sources</span><span class="o">=</span><span class="p">[</span><span class="n">main</span><span class="p">])</span>
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
+    <span class="n">logging</span><span class="o">.</span><span class="n">basicConfig</span><span class="p">(</span>
+        <span class="nb">format</span><span class="o">=</span><span class="s1">&#39;[</span><span class="si">%(asctime)s</span><span class="s1">] </span><span class="si">%(levelname)s</span><span class="s1"> : </span><span class="si">%(message)s</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">level</span><span class="o">=</span><span class="n">logging</span><span class="o">.</span><span class="n">INFO</span><span class="p">)</span>
+    <span class="n">cli</span><span class="p">()</span>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2019, Amit Kushwaha
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

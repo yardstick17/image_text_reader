@@ -1,0 +1,281 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>tesseract_interface.pytesser &mdash; Image Text Reader  documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../../_static/jquery.js"></script>
+        <script type="text/javascript" src="../../_static/underscore.js"></script>
+        <script type="text/javascript" src="../../_static/doctools.js"></script>
+        <script type="text/javascript" src="../../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> Image Text Reader
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../README.html">image_text_reader</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../modules.html">image_text_reader</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Image Text Reader</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../index.html">Module code</a> &raquo;</li>
+        
+          <li><a href="../tesseract_interface.html">tesseract_interface</a> &raquo;</li>
+        
+      <li>tesseract_interface.pytesser</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for tesseract_interface.pytesser</h1><div class="highlight"><pre>
+<span></span><span class="c1"># -*- coding: utf-8 -*-</span>
+<span class="kn">import</span> <span class="nn">logging</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">from</span> <span class="nn">subprocess</span> <span class="k">import</span> <span class="n">PIPE</span>
+<span class="kn">from</span> <span class="nn">subprocess</span> <span class="k">import</span> <span class="n">Popen</span>
+
+<span class="kn">from</span> <span class="nn">clean_text.clean_text</span> <span class="k">import</span> <span class="n">CleanText</span>
+
+<span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
+
+<span class="c1"># All the PSM arguments as a variable name (avoid having to know them)</span>
+<span class="n">PSM_OSD_ONLY</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="n">PSM_SEG_AND_OSD</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="n">PSM_SEG_ONLY</span> <span class="o">=</span> <span class="mi">2</span>
+<span class="n">PSM_AUTO</span> <span class="o">=</span> <span class="mi">3</span>
+<span class="n">PSM_SINGLE_COLUMN</span> <span class="o">=</span> <span class="mi">4</span>
+<span class="n">PSM_VERTICAL_ALIGN</span> <span class="o">=</span> <span class="mi">5</span>
+<span class="n">PSM_UNIFORM_BLOCK</span> <span class="o">=</span> <span class="mi">6</span>
+<span class="n">PSM_SINGLE_LINE</span> <span class="o">=</span> <span class="mi">7</span>
+<span class="n">PSM_SINGLE_WORD</span> <span class="o">=</span> <span class="mi">8</span>
+<span class="n">PSM_SINGLE_WORD_CIRCLE</span> <span class="o">=</span> <span class="mi">9</span>
+<span class="n">PSM_SINGLE_CHAR</span> <span class="o">=</span> <span class="mi">10</span>
+
+
+<div class="viewcode-block" id="TesseractException"><a class="viewcode-back" href="../../tesseract_interface.html#tesseract_interface.pytesser.TesseractException">[docs]</a><span class="k">class</span> <span class="nc">TesseractException</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>  <span class="c1"># Raised when tesseract does not return 0</span>
+    <span class="k">pass</span></div>
+
+
+<div class="viewcode-block" id="PyTesseract"><a class="viewcode-back" href="../../tesseract_interface.html#tesseract_interface.pytesser.PyTesseract">[docs]</a><span class="k">class</span> <span class="nc">PyTesseract</span><span class="p">:</span>
+    <span class="n">PROG_NAME</span> <span class="o">=</span> <span class="s1">&#39;tesseract&#39;</span>
+    <span class="n">TEMP_FILE</span> <span class="o">=</span> <span class="s1">&#39;/tmp/tmp&#39;</span>
+    <span class="n">DEFAULT_EXTENSION</span> <span class="o">=</span> <span class="s1">&#39;.txt&#39;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">input_file</span><span class="p">,</span> <span class="n">out_file</span><span class="p">,</span> <span class="n">psm</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+
+<span class="sd">		:param input_file:</span>
+<span class="sd">		:param out_file:</span>
+<span class="sd">		:param psm: Page segmentation modes:</span>
+<span class="sd">					0    Orientation and script detection (OSD) only.</span>
+<span class="sd">					1    Automatic page segmentation with OSD.</span>
+<span class="sd">					2    Automatic page segmentation, but no OSD, or OCR.</span>
+<span class="sd">					3    Fully automatic page segmentation, but no OSD. (Default)</span>
+<span class="sd">					4    Assume a single column of text of variable sizes.</span>
+<span class="sd">					5    Assume a single uniform block of vertically aligned text.</span>
+<span class="sd">					6    Assume a single uniform block of text.</span>
+<span class="sd">					7    Treat the image as a single text line.</span>
+<span class="sd">					8    Treat the image as a single word.</span>
+<span class="sd">					9    Treat the image as a single word in a circle.</span>
+<span class="sd">					10    Treat the image as a single character.</span>
+<span class="sd">					11    Sparse text. Find as much text as possible in no particular order.</span>
+<span class="sd">					12    Sparse text with OSD.</span>
+<span class="sd">					13    Raw line. Treat the image as a single text line,</span>
+<span class="sd">										bypassing hacks that are Tesseract-specific.</span>
+<span class="sd">		&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">input_file</span> <span class="o">=</span> <span class="n">input_file</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">output_file</span> <span class="o">=</span> <span class="n">out_file</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">psm</span> <span class="o">=</span> <span class="n">psm</span>
+
+    <span class="k">def</span> <span class="nf">_read_image</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">args</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">PROG_NAME</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">input_file</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">output_file</span><span class="p">]</span>  <span class="c1"># Create the arguments</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">psm</span><span class="p">:</span>
+            <span class="n">args</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;--psm&#39;</span><span class="p">)</span>
+            <span class="n">args</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">psm</span><span class="p">))</span>
+        <span class="n">proc</span> <span class="o">=</span> <span class="n">Popen</span><span class="p">(</span><span class="n">args</span><span class="p">,</span> <span class="n">stdout</span><span class="o">=</span><span class="n">PIPE</span><span class="p">,</span> <span class="n">stderr</span><span class="o">=</span><span class="n">PIPE</span><span class="p">)</span>  <span class="c1"># Open process</span>
+        <span class="n">ret</span> <span class="o">=</span> <span class="n">proc</span><span class="o">.</span><span class="n">communicate</span><span class="p">()</span>  <span class="c1"># Launch it</span>
+        <span class="n">code</span> <span class="o">=</span> <span class="n">proc</span><span class="o">.</span><span class="n">returncode</span>
+        <span class="k">if</span> <span class="n">code</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">TesseractException</span><span class="p">(</span><span class="s1">&#39;Exception code: </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">code</span><span class="p">))</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s1">&#39;Output of image text is written in the file: </span><span class="si">%s</span><span class="s1">&#39;</span><span class="p">,</span>
+                     <span class="bp">self</span><span class="o">.</span><span class="n">output_file</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">ret</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">filepath_with_extension</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">output_file</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">DEFAULT_EXTENSION</span>
+
+<div class="viewcode-block" id="PyTesseract.read_text"><a class="viewcode-back" href="../../tesseract_interface.html#tesseract_interface.pytesser.PyTesseract.read_text">[docs]</a>    <span class="k">def</span> <span class="nf">read_text</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_read_image</span><span class="p">()</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">filepath_with_extension</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">file</span><span class="p">:</span>
+            <span class="n">text</span> <span class="o">=</span> <span class="n">file</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+            <span class="n">clean_text</span> <span class="o">=</span> <span class="n">CleanText</span><span class="p">(</span><span class="n">text</span><span class="p">)</span><span class="o">.</span><span class="n">process</span><span class="p">()</span>
+        <span class="n">os</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">filepath_with_extension</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">clean_text</span></div></div>
+
+
+<div class="viewcode-block" id="image_to_string"><a class="viewcode-back" href="../../tesseract_interface.html#tesseract_interface.pytesser.image_to_string">[docs]</a><span class="k">def</span> <span class="nf">image_to_string</span><span class="p">(</span><span class="n">file</span><span class="p">,</span> <span class="n">psm</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="n">txt</span> <span class="o">=</span> <span class="n">PyTesseract</span><span class="p">(</span><span class="n">file</span><span class="p">,</span> <span class="n">PyTesseract</span><span class="o">.</span><span class="n">TEMP_FILE</span><span class="p">,</span> <span class="n">psm</span><span class="o">=</span><span class="n">psm</span><span class="p">)</span><span class="o">.</span><span class="n">read_text</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">txt</span></div>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2019, Amit Kushwaha
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>
