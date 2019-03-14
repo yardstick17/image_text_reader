@@ -13,6 +13,7 @@ git checkout -- .
 git fetch --all
 
 # build html docs from sphinx files
+sphinx-apidoc -o "$buildDirectory" .
 sphinx-build -b html . "$buildDirectory"
 
 # create or use orphaned gh-pages branch
