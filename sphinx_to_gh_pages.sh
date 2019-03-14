@@ -20,7 +20,7 @@ sphinx-build -b html . "$buildDirectory"
 branch_name=gh-pages
 if [ $(git branch --list "$branch_name") ]
 then
-	git stash
+	git clean  -d  -fx .
 	git checkout $branch_name
 	git pull origin $branch_name
 	#git stash apply
