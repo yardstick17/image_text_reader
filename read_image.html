@@ -17,36 +17,35 @@
   
 
   
-  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
-  
-    
-      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
-        <script type="text/javascript" src="_static/jquery.js"></script>
-        <script type="text/javascript" src="_static/underscore.js"></script>
-        <script type="text/javascript" src="_static/doctools.js"></script>
-        <script type="text/javascript" src="_static/language_data.js"></script>
-    
-    <script type="text/javascript" src="_static/js/theme.js"></script>
 
+  
+  
     
 
   
-  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+
+  
+    <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="tesseract_interface package" href="tesseract_interface.html" />
     <link rel="prev" title="image_preprocessing package" href="image_preprocessing.html" /> 
+
+  
+  <script src="_static/js/modernizr.min.js"></script>
+
 </head>
 
 <body class="wy-body-for-nav">
 
    
   <div class="wy-grid-for-nav">
+
     
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
-        <div class="wy-side-nav-search" >
+        <div class="wy-side-nav-search">
           
 
           
@@ -158,44 +157,8 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="module-read_image">
-<span id="read-image-module"></span><h1>read_image module<a class="headerlink" href="#module-read_image" title="Permalink to this headline">¶</a></h1>
-<dl class="function">
-<dt id="read_image.extract_image_from_location">
-<code class="descclassname">read_image.</code><code class="descname">extract_image_from_location</code><span class="sig-paren">(</span><em>mask</em>, <em>x</em>, <em>y</em>, <em>w</em>, <em>h</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/read_image.html#extract_image_from_location"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#read_image.extract_image_from_location" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="function">
-<dt id="read_image.extract_image_text">
-<code class="descclassname">read_image.</code><code class="descname">extract_image_text</code><span class="sig-paren">(</span><em>image</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/read_image.html#extract_image_text"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#read_image.extract_image_text" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="function">
-<dt id="read_image.find_possible_contours_in_image">
-<code class="descclassname">read_image.</code><code class="descname">find_possible_contours_in_image</code><span class="sig-paren">(</span><em>inv_img</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/read_image.html#find_possible_contours_in_image"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#read_image.find_possible_contours_in_image" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="function">
-<dt id="read_image.get_text_with_location">
-<code class="descclassname">read_image.</code><code class="descname">get_text_with_location</code><span class="sig-paren">(</span><em>boxed_image</em>, <em>contours</em>, <em>img</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/read_image.html#get_text_with_location"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#read_image.get_text_with_location" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="function">
-<dt id="read_image.read_contours_text">
-<code class="descclassname">read_image.</code><code class="descname">read_contours_text</code><span class="sig-paren">(</span><em>boxed_image</em>, <em>contours</em>, <em>img</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/read_image.html#read_contours_text"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#read_image.read_contours_text" title="Permalink to this definition">¶</a></dt>
-<dd><p>store on the location where it is located in the image. here it will be top-left pixel location as the key</p>
-</dd></dl>
-
-<dl class="function">
-<dt id="read_image.read_image_from_file">
-<code class="descclassname">read_image.</code><code class="descname">read_image_from_file</code><span class="sig-paren">(</span><em>filename</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/read_image.html#read_image_from_file"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#read_image.read_image_from_file" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="function">
-<dt id="read_image.write_as_digital_image">
-<code class="descclassname">read_image.</code><code class="descname">write_as_digital_image</code><span class="sig-paren">(</span><em>image_text_dict</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/read_image.html#write_as_digital_image"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#read_image.write_as_digital_image" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
+  <div class="section" id="read-image-module">
+<h1>read_image module<a class="headerlink" href="#read-image-module" title="Permalink to this headline">¶</a></h1>
 </div>
 
 
@@ -209,7 +172,7 @@
         <a href="tesseract_interface.html" class="btn btn-neutral float-right" title="tesseract_interface package" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="image_preprocessing.html" class="btn btn-neutral float-left" title="image_preprocessing package" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="image_preprocessing.html" class="btn btn-neutral" title="image_preprocessing package" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
@@ -218,7 +181,7 @@
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2019, Amit Kushwaha
+        &copy; Copyright 2019, Amit Kushwaha.
 
     </p>
   </div>
@@ -235,16 +198,36 @@
   
 
 
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'./',
+            VERSION:'',
+            LANGUAGE:'None',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="_static/jquery.js"></script>
+      <script type="text/javascript" src="_static/underscore.js"></script>
+      <script type="text/javascript" src="_static/doctools.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+  
+
   <script type="text/javascript">
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(true);
       });
-  </script>
-
-  
-  
-    
-   
+  </script> 
 
 </body>
 </html>

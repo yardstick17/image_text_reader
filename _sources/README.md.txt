@@ -7,6 +7,27 @@ It's a very basic tool to read images , images formatted like a restaurant-menu.
 This tools need tesseract-ocr engine. Help yourself with this --
 * https://github.com/tesseract-ocr/tesseract/wiki
 
+#### Linux
+
+Tesseract is available directly from many Linux distributions. The package is generally called 'tesseract' or 'tesseract-ocr' - search your distribution's repositories to find it. Thus you can install Tesseract 4.x and it's developer tools on Ubuntu 18.x bionic by simply running:
+```bash
+sudo apt install tesseract-ocr
+sudo apt install libtesseract-dev
+
+```
+Refer [here](https://github.com/tesseract-ocr/tesseract/wiki) for more on installation on all other systems.
+
+#### macOS
+
+##### Homebrew
+
+To install Tesseract run this command:
+
+```bash
+brew install tesseract
+```
+
+
 ###### OCR reads the text extracted image from the full image. [Click here](https://github.com/yardstick17/menu_parser/blob/master/boxed_image.jpg)
 
 ## Command to use:

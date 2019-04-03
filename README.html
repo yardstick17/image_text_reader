@@ -17,36 +17,35 @@
   
 
   
-  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
-  
-    
-      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
-        <script type="text/javascript" src="_static/jquery.js"></script>
-        <script type="text/javascript" src="_static/underscore.js"></script>
-        <script type="text/javascript" src="_static/doctools.js"></script>
-        <script type="text/javascript" src="_static/language_data.js"></script>
-    
-    <script type="text/javascript" src="_static/js/theme.js"></script>
 
+  
+  
     
 
   
-  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+
+  
+    <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="image_text_reader" href="modules.html" />
     <link rel="prev" title="Welcome to Image Text Reader’s documentation!" href="index.html" /> 
+
+  
+  <script src="_static/js/modernizr.min.js"></script>
+
 </head>
 
 <body class="wy-body-for-nav">
 
    
   <div class="wy-grid-for-nav">
+
     
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
-        <div class="wy-side-nav-search" >
+        <div class="wy-side-nav-search">
           
 
           
@@ -84,7 +83,11 @@
 <ul class="current">
 <li class="toctree-l1 current"><a class="current reference internal" href="#">image_text_reader</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#tesseract-ocr">Tesseract-ocr</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#ocr-reads-the-text-extracted-image-from-the-full-image-click-here">OCR reads the text extracted image from the full image. Click here</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#linux">Linux</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#macos">macOS</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#homebrew">Homebrew</a></li>
+</ul>
+</li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#command-to-use">Command to use:</a><ul>
@@ -165,28 +168,47 @@
            <div itemprop="articleBody">
             
   <div class="section" id="image-text-reader">
-<h1>image_text_reader<a class="headerlink" href="#image-text-reader" title="Permalink to this headline">¶</a></h1>
-<p><a class="reference external" href="https://gitter.im/yardstick17/image_text_reader?utm_source=badge&amp;utm_medium=badge&amp;utm_campaign=pr-badge"><img alt="https://badges.gitter.im/yardstick17/image_text_reader.svg" src="https://badges.gitter.im/yardstick17/image_text_reader.svg" />Gitter</a> <a class="reference external" href="https://travis-ci.org/yardstick17/image_text_reader"><img alt="https://travis-ci.org/yardstick17/image_text_reader.svg?branch=master" src="https://travis-ci.org/yardstick17/image_text_reader.svg?branch=master" />Build Status</a></p>
+<span id="image-text-reader"></span><h1>image_text_reader<a class="headerlink" href="#image-text-reader" title="Permalink to this headline">¶</a></h1>
+<p><a class="reference external" href="https://gitter.im/yardstick17/image_text_reader?utm_source=badge&amp;utm_medium=badge&amp;utm_campaign=pr-badge"><img alt="Gitter" src="https://badges.gitter.im/yardstick17/image_text_reader.svg" /></a> <a class="reference external" href="https://travis-ci.org/yardstick17/image_text_reader"><img alt="Build Status" src="https://travis-ci.org/yardstick17/image_text_reader.svg?branch=master" /></a></p>
 <p>It’s a very basic tool to read images , images formatted like a restaurant-menu.</p>
 <div class="section" id="tesseract-ocr">
-<h2>Tesseract-ocr<a class="headerlink" href="#tesseract-ocr" title="Permalink to this headline">¶</a></h2>
+<span id="tesseract-ocr"></span><h2>Tesseract-ocr<a class="headerlink" href="#tesseract-ocr" title="Permalink to this headline">¶</a></h2>
 <p>This tools need tesseract-ocr engine. Help yourself with this –</p>
 <ul class="simple">
 <li>https://github.com/tesseract-ocr/tesseract/wiki</li>
 </ul>
+<div class="section" id="linux">
+<span id="linux"></span><h3>Linux<a class="headerlink" href="#linux" title="Permalink to this headline">¶</a></h3>
+<p>Tesseract is available directly from many Linux distributions. The package is generally called ‘tesseract’ or ‘tesseract-ocr’ - search your distribution’s repositories to find it. Thus you can install Tesseract 4.x and it’s developer tools on Ubuntu 18.x bionic by simply running:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sudo apt install tesseract-ocr
+sudo apt install libtesseract-dev
+</pre></div>
+</div>
+<p>Refer <a class="reference external" href="https://github.com/tesseract-ocr/tesseract/wiki">here</a> for more on installation on all other systems.</p>
+</div>
+<div class="section" id="macos">
+<span id="macos"></span><h3>macOS<a class="headerlink" href="#macos" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="homebrew">
+<span id="homebrew"></span><h4>Homebrew<a class="headerlink" href="#homebrew" title="Permalink to this headline">¶</a></h4>
+<p>To install Tesseract run this command:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>brew install tesseract
+</pre></div>
+</div>
 <div class="section" id="ocr-reads-the-text-extracted-image-from-the-full-image-click-here">
-<h3>OCR reads the text extracted image from the full image. <a class="reference external" href="https://github.com/yardstick17/menu_parser/blob/master/boxed_image.jpg">Click here</a><a class="headerlink" href="#ocr-reads-the-text-extracted-image-from-the-full-image-click-here" title="Permalink to this headline">¶</a></h3>
+<span id="ocr-reads-the-text-extracted-image-from-the-full-image-click-here"></span><h5>OCR reads the text extracted image from the full image. <a class="reference external" href="https://github.com/yardstick17/menu_parser/blob/master/boxed_image.jpg">Click here</a><a class="headerlink" href="#ocr-reads-the-text-extracted-image-from-the-full-image-click-here" title="Permalink to this headline">¶</a></h5>
+</div>
+</div>
 </div>
 </div>
 <div class="section" id="command-to-use">
-<h2>Command to use:<a class="headerlink" href="#command-to-use" title="Permalink to this headline">¶</a></h2>
+<span id="command-to-use"></span><h2>Command to use:<a class="headerlink" href="#command-to-use" title="Permalink to this headline">¶</a></h2>
 <div class="section" id="dockerized-image-reading">
-<h3>Dockerized image reading<a class="headerlink" href="#dockerized-image-reading" title="Permalink to this headline">¶</a></h3>
+<span id="dockerized-image-reading"></span><h3>Dockerized image reading<a class="headerlink" href="#dockerized-image-reading" title="Permalink to this headline">¶</a></h3>
 <blockquote>
 <div>docker run -it yardstick17/image-text-reader bash -c “PYTHONPATH=’.’ python3 read_image.py read_text_from_local_image -f images/sample_image.jpg”</div></blockquote>
 </div>
 <div class="section" id="read-from-url">
-<h3>Read from url<a class="headerlink" href="#read-from-url" title="Permalink to this headline">¶</a></h3>
+<span id="read-from-url"></span><h3>Read from url<a class="headerlink" href="#read-from-url" title="Permalink to this headline">¶</a></h3>
 <blockquote>
 <div>PYTHONPATH=’.’ python3 read_image.py read_text_from_image_url -u https://marketplace.canva.com/MACHUlPU93Q/1/0/thumbnail_large/canva-peach-green-leaves-garden-vegetarian-pizza-menu-MACHUlPU93Q.jpg</div></blockquote>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="o">[</span><span class="m">2017</span>-07-07 <span class="m">16</span>:20:34,119<span class="o">]</span> INFO : Downloading image from url: https://marketplace.canva.com/MACHUlPU93Q/1/0/thumbnail_large/canva-peach-green-leaves-garden-vegeta
@@ -198,7 +220,7 @@
 </div>
 </div>
 <div class="section" id="read-from-local-image">
-<h3>Read from local image<a class="headerlink" href="#read-from-local-image" title="Permalink to this headline">¶</a></h3>
+<span id="read-from-local-image"></span><h3>Read from local image<a class="headerlink" href="#read-from-local-image" title="Permalink to this headline">¶</a></h3>
 <blockquote>
 <div>PYTHONPATH=’.’ python3 read_image.py read_text_from_local_image -f images/sample_image.jpg</div></blockquote>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="o">[</span><span class="m">2017</span>-07-07 <span class="m">16</span>:32:38,862<span class="o">]</span> INFO : Processing image <span class="k">for</span> text Extraction
@@ -208,7 +230,7 @@
 </div>
 </div>
 <div class="section" id="deploy-an-api-for-reading-text-from-image">
-<h3>Deploy an api for reading text from image!<a class="headerlink" href="#deploy-an-api-for-reading-text-from-image" title="Permalink to this headline">¶</a></h3>
+<span id="deploy-an-api-for-reading-text-from-image"></span><h3>Deploy an api for reading text from image!<a class="headerlink" href="#deploy-an-api-for-reading-text-from-image" title="Permalink to this headline">¶</a></h3>
 <blockquote>
 <div>PYTHONPATH=’.’ python3 api/app.py</div></blockquote>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="o">[</span><span class="m">2017</span>-07-07 <span class="m">16</span>:49:57,818<span class="o">]</span> INFO :  * Running on http://0.0.0.0:6600/ <span class="o">(</span>Press CTRL+C to quit<span class="o">)</span>
@@ -219,7 +241,7 @@
 </div>
 </div>
 <div class="section" id="sample-api-deployed-on-my-tiny-server-please-be-patient-with-them">
-<h3>Sample api deployed on my tiny server. Please be patient with them.<a class="headerlink" href="#sample-api-deployed-on-my-tiny-server-please-be-patient-with-them" title="Permalink to this headline">¶</a></h3>
+<span id="sample-api-deployed-on-my-tiny-server-please-be-patient-with-them"></span><h3>Sample api deployed on my tiny server. Please be patient with them.<a class="headerlink" href="#sample-api-deployed-on-my-tiny-server-please-be-patient-with-them" title="Permalink to this headline">¶</a></h3>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>curl -X POST <span class="se">\</span>
   http://54.254.214.96/read_image_from_file/url <span class="se">\</span>
   -F <span class="nv">url</span><span class="o">=</span>https://africatalentbank.com/wp-content/uploads/2014/10/Menu.jpg
@@ -227,12 +249,12 @@
 </div>
 </div>
 <div class="section" id="digital-menu">
-<h3>Digital Menu<a class="headerlink" href="#digital-menu" title="Permalink to this headline">¶</a></h3>
-<p><img alt="_images/digital_menu.jpg" src="_images/digital_menu.jpg" />Digital Image</p>
+<span id="digital-menu"></span><h3>Digital Menu<a class="headerlink" href="#digital-menu" title="Permalink to this headline">¶</a></h3>
+<p><img alt="Digital Image" src="_images/digital_menu.jpg" /></p>
 </div>
 <div class="section" id="original-image">
-<h3>Original Image<a class="headerlink" href="#original-image" title="Permalink to this headline">¶</a></h3>
-<p><img alt="_images/sample_image.jpg" src="_images/sample_image.jpg" />Original Image</p>
+<span id="original-image"></span><h3>Original Image<a class="headerlink" href="#original-image" title="Permalink to this headline">¶</a></h3>
+<p><img alt="Original Image" src="_images/sample_image.jpg" /></p>
 </div>
 </div>
 </div>
@@ -248,7 +270,7 @@
         <a href="modules.html" class="btn btn-neutral float-right" title="image_text_reader" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="index.html" class="btn btn-neutral float-left" title="Welcome to Image Text Reader’s documentation!" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="index.html" class="btn btn-neutral" title="Welcome to Image Text Reader’s documentation!" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
@@ -257,7 +279,7 @@
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2019, Amit Kushwaha
+        &copy; Copyright 2019, Amit Kushwaha.
 
     </p>
   </div>
@@ -274,16 +296,36 @@
   
 
 
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'./',
+            VERSION:'',
+            LANGUAGE:'None',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="_static/jquery.js"></script>
+      <script type="text/javascript" src="_static/underscore.js"></script>
+      <script type="text/javascript" src="_static/doctools.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+  
+
   <script type="text/javascript">
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(true);
       });
-  </script>
-
-  
-  
-    
-   
+  </script> 
 
 </body>
 </html>
